@@ -12,7 +12,7 @@
     7. Valores
     8. Sobre mí + banda de frase
     9. Preguntas frecuentes
-   10. Contacto    → formulario (se conecta con Brevo en la Fase 3)
+   10. Contacto    → formulario conectado con Brevo
    11. Pie de página
   ============================================================
 -->
@@ -389,6 +389,8 @@
     .consentimiento input { width: 22px; height: 22px; margin: 2px 0 0; accent-color: var(--terracota); }
     .formulario .boton { width: 100%; }
     .formulario__aviso { font-size: .85rem; color: var(--gris-texto); margin: 0; }
+    .formulario__error { font-size: .95rem; color: #8A1C1C; background: #FBE9E4; border-radius: 12px; padding: 12px 14px; margin: 0; grid-column: 1 / -1; }
+    .formulario .boton:disabled { opacity: .7; cursor: wait; transform: none; }
     /* Campo trampa para bots (honeypot): invisible para personas */
     .trampa { position: absolute; left: -9999px; }
 
@@ -426,7 +428,7 @@
       .valores { grid-template-columns: repeat(2, 1fr); }
       .paso { grid-template-columns: 90px 1fr; }
       .formulario { padding: 36px; grid-template-columns: 1fr 1fr; }
-      .campo--completo, .consentimiento, .formulario .boton, .formulario__aviso { grid-column: 1 / -1; }
+      .campo--completo, .consentimiento, .formulario .boton, .formulario__aviso, .formulario__error { grid-column: 1 / -1; }
     }
 
     /* ==========================================================
@@ -671,57 +673,60 @@
 
         <div>
           <!--
-            FORMULARIO
-            Fase 3: acá conectamos Brevo. Cambiaremos el "action" por la URL
-            del formulario de Brevo y los "name" de los campos por los suyos.
-            Por ahora, el JavaScript del final solo muestra el mensaje de gracias.
+            FORMULARIO conectado con Brevo
+            - "action": la dirección de tu formulario en Brevo (lista Leads Web).
+            - Los "name" (NOMBRE, EMAIL, NEGOCIO, MENSAJE, OPT_IN) tienen que coincidir
+              EXACTAMENTE con los atributos de Brevo.
+            - El JavaScript del final envía los datos sin salir de la página.
           -->
-          <form class="formulario" id="formulario" action="#" method="post" novalidate>
+          <form class="formulario" id="formulario" method="post" novalidate
+                action="https://b9bcd83a.sibforms.com/serve/MUIFACxl4UAE0pzDkVdXPUIVpZ3syQjtokQ8DmM4mwNbEzepU6IjWxVyxqREi1udomtqlRP-oBEP7_e8sVhygYYT3oLbpSG1V4AiQU8pUYTdoxGq4Yotst0WTljmm8kfTXScfK_84yKuyaM6Y0SkKk8mJtdqD8cNPe6KuiSAASxnOMC0sJ2P19P92myzkQsjej7skSHIjc-h6LD_sw==">
             <div class="campo">
               <label for="nombre">Nombre</label>
-              <input type="text" id="nombre" name="NOMBRE" autocomplete="given-name" required>
+              <input type="text" id="nombre" name="NOMBRE" maxlength="200" autocomplete="given-name" required>
             </div>
             <div class="campo">
               <label for="email">Email</label>
               <input type="email" id="email" name="EMAIL" autocomplete="email" required>
             </div>
-            <div class="campo">
+            <div class="campo campo--completo">
               <label for="negocio">Tu marca o negocio <span class="opcional">(opcional)</span></label>
-              <input type="text" id="negocio" name="NEGOCIO" autocomplete="organization">
-            </div>
-            <div class="campo">
-              <label for="necesidad">¿Qué necesitas?</label>
-              <select id="necesidad" name="NECESIDAD">
-                <option>Pack Arranque (las 3 piezas)</option>
-                <option>Solo una web</option>
-                <option>Rediseñar mi web actual</option>
-                <option>Todavía no lo sé</option>
-              </select>
+              <input type="text" id="negocio" name="NEGOCIO" maxlength="200" autocomplete="organization">
             </div>
             <div class="campo campo--completo">
-              <label for="mensaje">Cuéntame un poco más <span class="opcional">(opcional)</span></label>
-              <textarea id="mensaje" name="MENSAJE" placeholder="¿A qué se dedica tu negocio? ¿Qué te gustaría lograr con tu web?"></textarea>
+              <label for="mensaje">¿Qué necesitas? <span class="opcional">(opcional)</span></label>
+              <textarea id="mensaje" name="MENSAJE" maxlength="200" placeholder="Cuéntame brevemente a qué se dedica tu negocio y qué te gustaría lograr con tu web."></textarea>
             </div>
 
-            <!-- Campo trampa: si un bot lo completa, descartamos el envío -->
+            <!-- Campo trampa de Brevo: invisible para personas. Si un bot lo completa, Brevo descarta el envío -->
             <div class="trampa" aria-hidden="true">
-              <label for="web">No completes este campo</label>
-              <input type="text" id="web" name="web" tabindex="-1" autocomplete="off">
+              <label for="email_address_check">No completes este campo</label>
+              <input type="text" id="email_address_check" name="email_address_check" tabindex="-1" autocomplete="off" value="">
             </div>
+            <!-- Datos técnicos que pide Brevo -->
+            <input type="hidden" name="locale" value="es">
+            <input type="hidden" name="html_type" value="simple">
 
-            <!-- Consentimiento RGPD: obligatorio en España/UE -->
+            <!-- 1) Privacidad: OBLIGATORIA. Solo informa; no se envía a Brevo (no tiene "name") -->
             <label class="consentimiento">
-              <input type="checkbox" id="privacidad" name="OPT_IN" required>
-              <span>He leído y acepto la <a href="privacidad.html">política de privacidad</a>. Acepto recibir un email de bienvenida y comunicaciones de AntoJa Studio. Me puedo dar de baja cuando quiera.</span>
+              <input type="checkbox" id="privacidad" required>
+              <span>He leído la <a href="privacidad.html">política de privacidad</a>.</span>
             </label>
 
-            <button type="submit" class="boton boton--principal">Quiero que me contactes</button>
-            <p class="formulario__aviso">Responsable: Antonella Jaime (AntoJa Studio). Finalidad: responder tu consulta y enviarte comunicaciones. Más info en la política de privacidad.</p>
+            <!-- 2) Comunicaciones comerciales: OPCIONAL y sin marcar (LSSI art. 21). Se guarda en Brevo como OPT_IN -->
+            <label class="consentimiento">
+              <input type="checkbox" id="opt_in" name="OPT_IN" value="1">
+              <span>Quiero recibir novedades y consejos de AntoJa Studio por email. Puedo darme de baja cuando quiera.</span>
+            </label>
+
+            <button type="submit" class="boton boton--principal" id="boton-enviar">Quiero que me contactes</button>
+            <p class="formulario__aviso">Responsable: Antonella Jaime (AntoJa Studio). Finalidad: responder a tu solicitud y, si lo aceptas, enviarte novedades. Puedes ejercer tus derechos escribiendo a hola@antojastudio.com. Más información en la política de privacidad.</p>
+            <p class="formulario__error" id="mensaje-error" role="alert" hidden>Ups, algo falló. Inténtalo de nuevo o escríbeme a <a href="mailto:hola@antojastudio.com">hola@antojastudio.com</a>.</p>
           </form>
 
           <div class="mensaje-ok" id="mensaje-ok" role="status" aria-live="polite" tabindex="-1">
             <h3>¡Gracias<span class="punto">!</span></h3>
-            <p>Recibí tu mensaje. Revisa tu bandeja de entrada: te acabo de enviar un email de bienvenida. Te contacto muy pronto.</p>
+            <p>Recibí tu mensaje y te contacto muy pronto.</p>
           </div>
         </div>
       </div>
@@ -769,19 +774,38 @@
     // 2. Año automático en el pie de página
     document.getElementById('anio').textContent = new Date().getFullYear();
 
-    // 3. Formulario (versión de prueba hasta conectar Brevo en la Fase 3)
+    // 3. Formulario: envía los datos a Brevo sin salir de la página
     const formulario = document.getElementById('formulario');
     const mensajeOk = document.getElementById('mensaje-ok');
-    formulario.addEventListener('submit', (evento) => {
-      evento.preventDefault();               // por ahora no se envía a ningún sitio
-      if (formulario.web.value) return;      // si el campo trampa tiene algo, es un bot
-      if (!formulario.checkValidity()) {     // revisa los campos obligatorios
+    const mensajeError = document.getElementById('mensaje-error');
+    const botonEnviar = document.getElementById('boton-enviar');
+
+    formulario.addEventListener('submit', async (evento) => {
+      evento.preventDefault();                       // evita que el navegador salga de tu web
+      mensajeError.hidden = true;
+      if (formulario.email_address_check.value) return;  // campo trampa con datos = bot
+      if (!formulario.checkValidity()) {             // revisa los campos obligatorios
         formulario.reportValidity();
         return;
       }
-      formulario.style.display = 'none';
-      mensajeOk.classList.add('visible');
-      mensajeOk.focus();
+
+      botonEnviar.disabled = true;
+      botonEnviar.textContent = 'Enviando…';
+      try {
+        // "no-cors": Brevo recibe los datos, aunque no nos deja leer su respuesta
+        await fetch(formulario.action, {
+          method: 'POST',
+          body: new FormData(formulario),
+          mode: 'no-cors'
+        });
+        formulario.style.display = 'none';
+        mensajeOk.classList.add('visible');
+        mensajeOk.focus();
+      } catch (error) {                              // sin conexión u otro problema
+        mensajeError.hidden = false;
+        botonEnviar.disabled = false;
+        botonEnviar.textContent = 'Quiero que me contactes';
+      }
     });
   </script>
 </body>
