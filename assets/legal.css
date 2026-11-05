@@ -1,0 +1,56 @@
+/* ============================================================
+   ESTILOS DE LAS PÁGINAS LEGALES
+   (aviso-legal.html, privacidad.html, cookies.html)
+   Es un archivo CSS externo: las 3 páginas lo comparten, así que
+   si cambias algo aquí, cambia en las 3 a la vez.
+   ============================================================ */
+:root {
+  --negro: #111111;
+  --terracota: #E96832;
+  --terracota-texto: #A94216;
+  --marfil: #F7F4EF;
+  --beige: #E8DDD0;
+  --gris-texto: #5E5A55;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--negro);
+  background: var(--marfil);
+}
+a { color: var(--terracota-texto); }
+.contenedor { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+.cabecera { border-bottom: 1px solid rgba(136, 132, 127, .25); }
+.cabecera .contenedor { display: flex; align-items: center; justify-content: space-between; height: 68px; max-width: 1120px; }
+.cabecera img { height: 34px; width: auto; display: block; }
+.volver { font-weight: 700; color: var(--negro); text-decoration: none; font-size: .95rem; }
+.volver:hover { color: var(--terracota-texto); }
+
+main { padding: 56px 0 80px; }
+.etiqueta { font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--terracota-texto); }
+h1, h2 { font-family: "Archivo", system-ui, sans-serif; letter-spacing: -0.02em; line-height: 1.1; }
+h1 { font-size: clamp(2.2rem, 7vw, 3.2rem); font-weight: 900; margin: 10px 0 8px; }
+h1 span { color: var(--terracota); }
+h2 { font-size: 1.4rem; font-weight: 800; margin: 44px 0 10px; }
+.actualizado { color: var(--gris-texto); font-size: .95rem; margin-bottom: 32px; }
+ul { padding-left: 1.2em; }
+li { margin-bottom: 6px; }
+
+/* Tabla de datos (responsive: en móvil se apila) */
+.datos { width: 100%; border-collapse: collapse; margin: 16px 0; background: #fff; border-radius: 14px; overflow: hidden; }
+.datos th, .datos td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--beige); vertical-align: top; }
+.datos th { width: 38%; font-weight: 700; }
+@media (max-width: 560px) {
+  .datos th, .datos td { display: block; width: 100%; }
+  .datos th { border-bottom: 0; padding-bottom: 0; }
+}
+
+/* Datos que tienes que completar: se ven resaltados para encontrarlos fácil */
+.pendiente { background: #FFE9A8; padding: 0 4px; border-radius: 4px; font-weight: 700; }
+
+.pie { background: var(--negro); color: #CFC9C1; padding: 32px 0; font-size: .9rem; }
+.pie a { color: var(--marfil); margin-right: 18px; }

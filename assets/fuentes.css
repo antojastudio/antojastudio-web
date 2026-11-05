@@ -1,0 +1,20 @@
+/* ============================================================
+   TIPOGRAFÍAS ALOJADAS EN TU PROPIA WEB
+   Antes se cargaban desde Google Fonts (eso enviaba la IP de cada
+   visitante a Google). Ahora los archivos están en assets/fonts/.
+   Son fuentes "variables": un solo archivo sirve para todos los grosores.
+   ============================================================ */
+@font-face {
+  font-family: "Archivo";
+  src: url("fonts/archivo.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("fonts/dm-sans.woff2") format("woff2");
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+}
