@@ -54,3 +54,12 @@ li { margin-bottom: 6px; }
 
 .pie { background: var(--negro); color: #CFC9C1; padding: 32px 0; font-size: .9rem; }
 .pie a { color: var(--marfil); margin-right: 18px; }
+
+/* Selector de idioma ES / CA (cabecera de las páginas legales) */
+.cabecera__derecha { display: flex; align-items: center; gap: 20px; }
+.idioma { display: flex; gap: 4px; font-size: .85rem; font-weight: 700; }
+.idioma a, .idioma span { padding: 4px 8px; border-radius: 999px; text-decoration: none; }
+.idioma a { color: var(--negro); border: 1px solid rgba(136, 132, 127, .5); }
+.idioma a:hover { border-color: var(--negro); }
+.idioma span { background: var(--negro); color: var(--marfil); }
+@media (max-width: 420px) { .volver { font-size: .85rem; } .cabecera__derecha { gap: 12px; } }

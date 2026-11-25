@@ -350,6 +350,28 @@
     .faq details[open] summary::after { transform: rotate(45deg); }
     .faq details p { color: var(--gris-texto); padding-bottom: 12px; margin: 0; }
 
+    /* 11b. CUADRO COMPARATIVO */
+    .comparativa { margin-top: 56px; }
+    .comparativa h3 { font-size: clamp(1.5rem, 4.5vw, 2rem); }
+    .comparativa__scroll { overflow-x: auto; margin-top: 20px; border-radius: var(--radio); background: var(--blanco); }
+    .comparativa__scroll:focus-visible { outline: 3px solid var(--negro); outline-offset: 3px; }
+    .comparativa table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: .95rem; }
+    .comparativa th, .comparativa td { padding: 14px 16px; text-align: center; border-bottom: 1px solid var(--beige); }
+    .comparativa tbody tr:last-child > * { border-bottom: 0; }
+    .comparativa thead th { font-family: var(--fuente-titulos); font-weight: 800; font-size: .95rem; vertical-align: bottom; }
+    .comparativa tbody th {
+      text-align: left; font-weight: 700; width: 40%;
+      position: sticky; left: 0; background: var(--blanco); z-index: 1;  /* columna fija al deslizar */
+    }
+    .comparativa td { color: var(--gris-texto); }
+    .comparativa .destacada { background: var(--negro); color: var(--marfil); }
+    .comparativa thead .destacada { border-radius: 12px 12px 0 0; }
+    .comparativa .si { color: var(--terracota); font-weight: 900; font-size: 1.2rem; }
+    .comparativa td:not(.destacada) .si { color: var(--negro); }
+    .comparativa .no { color: var(--gris); }
+    .comparativa__nota { font-size: .85rem; color: var(--gris-texto); margin-top: 10px; }
+    @media (min-width: 640px) { .comparativa__nota { display: none; } }  /* ahí la tabla ya entra entera */
+
     /* ==========================================================
        12. CONTACTO (formulario)
        ========================================================== */
@@ -410,6 +432,7 @@
     .pie__logo img { height: 44px; width: auto; margin-bottom: 18px; }
     .pie ul { list-style: none; padding: 0; margin: 24px 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
     .pie a { color: var(--marfil); }
+    .pie__idioma { font-size: .9rem; margin-top: -8px; }
     .pie__copy { border-top: 1px solid rgba(247, 244, 239, .15); padding-top: 20px; margin-top: 24px; font-size: .85rem; }
 
     /* ==========================================================
@@ -506,7 +529,7 @@
     <!-- ================= PRINCIPIO ================= -->
     <section class="seccion seccion--negra principio">
       <div class="contenedor">
-        <span class="etiqueta">01 / Nuestro principio</span>
+        <span class="etiqueta">01 / Mi principio</span>
         <h2>Una web atractiva importa. La estrategia que hay detrás, también<span class="punto">.</span></h2>
         <p class="intro">Una web tiene que facilitar la navegación y apoyar objetivos concretos. El diseño ayuda a vender, pero no lo garantiza por sí solo. Por eso cada web que hago está pensada para que pase algo:</p>
         <ul class="principio__lista">
@@ -589,10 +612,10 @@
     <section class="seccion seccion--negra">
       <div class="contenedor">
         <span class="etiqueta">04 / Valores</span>
-        <h2>Lo que nos mueve<span class="punto">.</span></h2>
+        <h2>Lo que me mueve<span class="punto">.</span></h2>
         <p class="intro">La personalidad de AntoJa no se impone a sus clientes: ayuda a que la personalidad de cada marca se haga visible.</p>
         <div class="valores">
-          <div class="valor"><h3>Autenticidad</h3><p>Mostrarnos como somos y representar con honestidad la personalidad de cada cliente.</p></div>
+          <div class="valor"><h3>Autenticidad</h3><p>Mostrarme como soy y representar con honestidad la personalidad de cada cliente.</p></div>
           <div class="valor"><h3>Actitud</h3><p>Iniciativa y criterio para proponer, resolver y defender decisiones con respeto.</p></div>
           <div class="valor"><h3>Claridad</h3><p>Hablar sin vueltas y comunicar alcances y expectativas con transparencia.</p></div>
           <div class="valor"><h3>Cercanía profesional</h3><p>De igual a igual, con humanidad y confianza, cuidando los compromisos.</p></div>
@@ -659,6 +682,34 @@
           </details>
         </div>
       </div>
+
+      <!-- CUADRO COMPARATIVO: qué me diferencia de otras opciones.
+           Compara con CATEGORÍAS (no con marcas reales). En el móvil la tabla
+           se desliza de lado y la primera columna queda fija. -->
+      <div class="contenedor comparativa">
+        <h3>¿Qué me diferencia de otras opciones<span class="punto">?</span></h3>
+        <div class="comparativa__scroll" tabindex="0" role="region" aria-label="Cuadro comparativo">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col"><span class="solo-lector">Qué incluye</span></th>
+                <th scope="col" class="destacada">AntoJa Studio</th>
+                <th scope="col">Plantilla tipo Wix</th>
+                <th scope="col">Agencia grande</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Hablas siempre con quien diseña tu web</th><td class="destacada"><span class="si" aria-label="Sí">✓</span></td><td><span class="no" aria-label="No">—</span></td><td>A veces</td></tr>
+              <tr><th scope="row">Diseño a medida, sin plantillas</th><td class="destacada"><span class="si" aria-label="Sí">✓</span></td><td><span class="no" aria-label="No">—</span></td><td><span class="si" aria-label="Sí">✓</span></td></tr>
+              <tr><th scope="row">Formulario y email de bienvenida incluidos</th><td class="destacada"><span class="si" aria-label="Sí">✓</span></td><td>Lo configuras tú</td><td>Como extra</td></tr>
+              <tr><th scope="row">Mirada de marketing y experiencia de cliente</th><td class="destacada"><span class="si" aria-label="Sí">✓</span></td><td><span class="no" aria-label="No">—</span></td><td><span class="si" aria-label="Sí">✓</span></td></tr>
+              <tr><th scope="row">Precio cerrado antes de empezar</th><td class="destacada"><span class="si" aria-label="Sí">✓</span></td><td>Cuota mensual</td><td>Variable</td></tr>
+              <tr><th scope="row">Te lo explico todo sin tecnicismos</th><td class="destacada"><span class="si" aria-label="Sí">✓</span></td><td><span class="no" aria-label="No">—</span></td><td>Depende</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="comparativa__nota">Desliza para ver todo →</p>
+      </div>
     </section>
 
     <!-- ================= CONTACTO ================= -->
@@ -695,7 +746,7 @@
             </div>
             <div class="campo campo--completo">
               <label for="mensaje">¿Qué necesitas? <span class="opcional">(opcional)</span></label>
-              <textarea id="mensaje" name="MENSAJE" maxlength="200" placeholder="Cuéntame brevemente a qué se dedica tu negocio y qué te gustaría lograr con tu web."></textarea>
+              <textarea id="mensaje" name="MENSAJE" maxlength="1000" placeholder="Cuéntame brevemente a qué se dedica tu negocio y qué te gustaría lograr con tu web."></textarea>
             </div>
 
             <!-- Campo trampa de Brevo: invisible para personas. Si un bot lo completa, Brevo descarta el envío -->
@@ -748,6 +799,8 @@
         <li><a href="privacidad.html">Política de privacidad</a></li>
         <li><a href="cookies.html">Política de cookies</a></li>
       </ul>
+      <!-- Versión en catalán de los textos legales (Codi de consum de Catalunya) -->
+      <p class="pie__idioma" lang="ca">En català: <a href="avis-legal.html" hreflang="ca">Avís legal</a> · <a href="privacitat.html" hreflang="ca">Privacitat</a> · <a href="galetes.html" hreflang="ca">Galetes</a></p>
       <p class="pie__copy">© <span id="anio">2026</span> AntoJa Studio. Todos los derechos reservados.</p>
     </div>
   </footer>
