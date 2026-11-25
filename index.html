@@ -432,6 +432,7 @@
     .pie__logo img { height: 44px; width: auto; margin-bottom: 18px; }
     .pie ul { list-style: none; padding: 0; margin: 24px 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
     .pie a { color: var(--marfil); }
+    .contador { font-size: .8rem; color: var(--gris-texto); text-align: right; margin-top: 4px; }
     .pie__idioma { font-size: .9rem; margin-top: -8px; }
     .pie__copy { border-top: 1px solid rgba(247, 244, 239, .15); padding-top: 20px; margin-top: 24px; font-size: .85rem; }
 
@@ -746,7 +747,9 @@
             </div>
             <div class="campo campo--completo">
               <label for="mensaje">¿Qué necesitas? <span class="opcional">(opcional)</span></label>
-              <textarea id="mensaje" name="MENSAJE" maxlength="1000" placeholder="Cuéntame brevemente a qué se dedica tu negocio y qué te gustaría lograr con tu web."></textarea>
+              <!-- Brevo rechaza más de 200 caracteres en este campo: por eso el límite es 200 -->
+              <textarea id="mensaje" name="MENSAJE" maxlength="200" aria-describedby="contador" placeholder="Cuéntame brevemente a qué se dedica tu negocio y qué te gustaría lograr con tu web."></textarea>
+              <p class="contador" id="contador" aria-live="polite"><span id="contador-num">0</span>/200</p>
             </div>
 
             <!-- Campo trampa de Brevo: invisible para personas. Si un bot lo completa, Brevo descarta el envío -->
@@ -771,8 +774,9 @@
             </label>
 
             <button type="submit" class="boton boton--principal" id="boton-enviar">Quiero que me contactes</button>
+            <!-- Aparece si Brevo rechaza el envío o no hay conexión -->
+            <p class="formulario__error" id="mensaje-error" role="alert" hidden>Ups, tu mensaje no se pudo enviar. Inténtalo de nuevo o escríbeme a <a href="mailto:hola@antojastudio.com">hola@antojastudio.com</a>.</p>
             <p class="formulario__aviso">Responsable: Antonella Jaime (AntoJa Studio). Finalidad: responder a tu solicitud y, si lo aceptas, enviarte novedades. Puedes ejercer tus derechos escribiendo a hola@antojastudio.com. Más información en la política de privacidad.</p>
-            <p class="formulario__error" id="mensaje-error" role="alert" hidden>Ups, algo falló. Inténtalo de nuevo o escríbeme a <a href="mailto:hola@antojastudio.com">hola@antojastudio.com</a>.</p>
           </form>
 
           <div class="mensaje-ok" id="mensaje-ok" role="status" aria-live="polite" tabindex="-1">
@@ -833,6 +837,13 @@
     const mensajeError = document.getElementById('mensaje-error');
     const botonEnviar = document.getElementById('boton-enviar');
 
+    // Contador de caracteres del mensaje (máximo 200, el límite de Brevo)
+    const campoMensaje = document.getElementById('mensaje');
+    const contadorNum = document.getElementById('contador-num');
+    campoMensaje.addEventListener('input', () => {
+      contadorNum.textContent = campoMensaje.value.length;
+    });
+
     formulario.addEventListener('submit', async (evento) => {
       evento.preventDefault();                       // evita que el navegador salga de tu web
       mensajeError.hidden = true;
@@ -845,17 +856,21 @@
       botonEnviar.disabled = true;
       botonEnviar.textContent = 'Enviando…';
       try {
-        // "no-cors": Brevo recibe los datos, aunque no nos deja leer su respuesta
-        await fetch(formulario.action, {
+        // "?isAjax=1" hace que Brevo responda con un JSON que SÍ podemos leer:
+        // {"success": true} si guardó el contacto, o {"success": false, "errors": {...}} si lo rechazó.
+        const respuesta = await fetch(formulario.action + '?isAjax=1', {
           method: 'POST',
-          body: new FormData(formulario),
-          mode: 'no-cors'
+          body: new FormData(formulario)
         });
+        const resultado = await respuesta.json();
+        if (!resultado.success) throw new Error(JSON.stringify(resultado.errors || resultado));
         formulario.style.display = 'none';
         mensajeOk.classList.add('visible');
         mensajeOk.focus();
-      } catch (error) {                              // sin conexión u otro problema
+      } catch (error) {                              // Brevo lo rechazó, o no hay conexión
+        console.error('Formulario no enviado:', error);
         mensajeError.hidden = false;
+        mensajeError.scrollIntoView({ behavior: 'smooth', block: 'center' });
         botonEnviar.disabled = false;
         botonEnviar.textContent = 'Quiero que me contactes';
       }
